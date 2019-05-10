@@ -11,6 +11,7 @@
         "measureds",
         "numpy",
         "onchange",
+        "pylint",
         "scipy",
         "statfit",
         "vline",
@@ -20,5 +21,7 @@
     ],
     "cSpell.language": "en,pt-BR",
     "python.formatting.provider": "black",
-    "python.pythonPath": "C:\\Python37\\python.exe"
+    "python.pythonPath": "C:\\Python37\\python.exe",
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true
 }

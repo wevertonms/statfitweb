@@ -1,5 +1,7 @@
 # StatFit
 
+
+
 Small python web application for statistical characterization of data using [SciPy](https://docs.scipy.org/doc/scipy/reference/tutorial/stats.html) and [Bokeh](https://bokeh.pydata.org/en/latest/).
 
 # Using
