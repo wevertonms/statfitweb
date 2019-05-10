@@ -1,0 +1,24 @@
+{
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#2E2363",
+        "titleBar.activeBackground": "#40308B",
+        "titleBar.activeForeground": "#FBFAFD"
+    },
+    "cSpell.words": [
+        "delim",
+        "dists",
+        "loadtxt",
+        "measureds",
+        "numpy",
+        "onchange",
+        "scipy",
+        "statfit",
+        "vline",
+        "webgl",
+        "xaxis",
+        "yaxis"
+    ],
+    "cSpell.language": "en,pt-BR",
+    "python.formatting.provider": "black",
+    "python.pythonPath": "C:\\Python37\\python.exe"
+}
