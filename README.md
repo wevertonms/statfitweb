@@ -12,7 +12,7 @@ If you use Windows, you need to install Python in your system:
  - [Windows 32 bits](https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe)
  - [Windows 64 bits](https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64.exe)
 
-After that, you need to install de dependencies using the running command bellow in cmd:
+After that, you need to install the dependencies using the running command bellow in cmd:
 
 ```
 python3 -m pip install --user scipy bokeh
