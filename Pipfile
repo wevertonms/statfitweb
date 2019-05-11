@@ -1,0 +1,20 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+black = "==19.3b0"
+pylint = "*"
+pydocstyle = "*"
+rope = "*"
+eliot = "*"
+eliot-tree = "*"
+requests = "*"
+
+[packages]
+bokeh = "*"
+scipy = "*"
+
+[requires]
+python_version = "3.7"
