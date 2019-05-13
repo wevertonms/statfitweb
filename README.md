@@ -21,5 +21,5 @@ python3 -m pip install --user scipy bokeh
 ## Running
 
 ```
-python3 -m bokeh serve --show statfit.py
+python3 statfit.py
 ```
