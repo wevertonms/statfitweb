@@ -5,7 +5,7 @@ from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource, Panel, Tabs
 from scipy import stats
 
-from custom_figure import CustomFigure, colors
+from bokeh_models import CustomFigure, colors
 
 PARAMS_MAPPER = dict(
     norm=dict(loc=None, scale=None),

@@ -78,7 +78,7 @@ def UploadButton(label, callback, **kw):
     """
     button = Button(label=label, **kw)
     file_source = ColumnDataSource({"file_contents": [], "file_name": []})
-    with open("button_callback.js", "r") as f:
+    with open("upload_button_callback.js", "r") as f:
         code = f.read()
     button.callback = CustomJS(args=dict(file_source=file_source), code=code)
     # Define mma função a ser chamada após o upload do arquivo.
