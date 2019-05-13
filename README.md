@@ -21,5 +21,5 @@ python3 -m pip install --user scipy bokeh
 ## Running
 
 ```
-python3 statfit.py
+python3 main.py
 ```
