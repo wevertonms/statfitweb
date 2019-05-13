@@ -8,7 +8,7 @@ Small python web application for statistical characterization of made with [SciP
 
 ## Install dependencies
 
-If you use Windows, you need to install Python in your system:
+If you use Windows, you need to install Python 3 in your system:
  - [Windows 32 bits](https://www.python.org/ftp/python/3.7.3/python-3.7.3.exe)
  - [Windows 64 bits](https://www.python.org/ftp/python/3.7.3/python-3.7.3-amd64.exe)
 
