@@ -11,6 +11,7 @@ rope = "*"
 eliot = "*"
 eliot-tree = "*"
 requests = "*"
+pyinstaller = "*"
 
 [packages]
 bokeh = "*"

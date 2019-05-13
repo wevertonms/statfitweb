@@ -1,8 +1,14 @@
-"""Figura Bokeh básica customizada."""
+"""Modelos Bokeh customizados."""
+import base64
+import io
 
 import bokeh.plotting as plt
+from bokeh.layouts import column
+from bokeh.models import ColumnDataSource, CustomJS
+from bokeh.models.widgets import Button, Paragraph
 from bokeh.palettes import Category10_10 as colors  # pylint: disable=no-name-in-module
 from bokeh.plotting import Figure, output_file
+from bokeh.server.server import Server
 
 
 class CustomFigure(Figure):
@@ -60,3 +66,60 @@ class CustomFigure(Figure):
     def show(self):
         """Exibe a figura em html no navegador."""
         plt.show(self)
+
+
+class UploadButton:
+    """Botão para upload de um arquivo.
+    
+    Args:
+        Os mesmo para um botão qualquer: label, button_type,...
+    """
+
+    def __init__(self, **kw):
+        """Construtor."""
+        button = Button(**kw)
+        self.__dict__.update(button.__dict__)
+        self.file_source = ColumnDataSource({"file_contents": [], "file_name": []})
+        with open("button_callback.js", "r") as f:
+            code = f.read()
+        self.callback = CustomJS(args=dict(file_source=self.file_source), code=code)
+        self.__view_model__ = "Button"
+
+    def on_upload(self, callback):
+        """Define mma função a ser chamada após o upload do arquivo.
+        
+        Args:
+            callback (function): função a ser chamada.
+        """
+
+        def upload_callback(attr, old, new):
+            raw_contents = self.file_source.data["file_contents"][0]
+            prefix, b64_contents = raw_contents.split(",", 1)
+            file_contents = base64.b64decode(b64_contents)
+            new = io.BytesIO(file_contents)
+            callback(attr, old, new)
+
+        self.file_source.on_change("data", upload_callback)
+
+
+def modify_doc(doc):
+    """Inclui o itens no curdoc do Bokeh Server."""
+    upload_button = UploadButton(label="Open file ...")
+    button = Button(label="Open file ...")
+
+    def callback(attr, old, new):
+        p.texte = new
+
+    upload_button.on_upload(callback)
+    p = Paragraph(text="Antes")
+    doc.add_root(column([button, p]))
+
+
+server = Server({"/": modify_doc})
+server.start()
+
+
+if __name__ == "__main__":
+    print("Opening Bokeh application on http://localhost:5006/")
+    server.io_loop.add_callback(server.show, "/")
+    server.io_loop.start()
