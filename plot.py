@@ -2,7 +2,7 @@
 
 import numpy as np
 from bokeh.layouts import layout
-from bokeh.models import ColumnDataSource, Panel, Tabs
+from bokeh.models import ColumnDataSource, Panel, Tabs, Range1d
 from scipy import stats
 
 from bokeh_models import CustomFigure, colors
@@ -54,7 +54,9 @@ class Plot:
         self.numeric_source = ColumnDataSource(dict(x=[]))
         # Cria o plot base
         self.pdf_plot = CustomFigure(
-            "Probability Density", ("Values", "Relative frequency")
+            "Probability Density",
+            ("Values", "Relative frequency"),
+            y_range=Range1d(start=0.0),
         )
         self.pdf_plot.quad(
             source=self.observed_source,
@@ -67,7 +69,9 @@ class Plot:
             color=colors[0],
         )
         self.cdf_plot = CustomFigure(
-            "Cumulative Probability", ("Values", "Relative frequency")
+            "Cumulative Probability",
+            ("Values", "Relative frequency"),
+            y_range=Range1d(start=0.0, end=1.02),
         )
         self.cdf_plot.line(
             source=self.observed_source,
