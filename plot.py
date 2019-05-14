@@ -5,7 +5,7 @@ from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource, Panel, Tabs, Range1d
 from scipy import stats
 
-from bokeh_models import CustomFigure, colors
+from bokeh_models import Figure, colors
 
 PARAMS_MAPPER = dict(
     norm=dict(loc=None, scale=None),
@@ -40,41 +40,31 @@ class Plot:
 
     def __init__(self):
         """Construtor."""
-        self.observed_source = ColumnDataSource(
-            dict(
-                observed=[],
-                x=[],
-                cdf_x=[],
-                cdf_y=[],
-                cdf_quad_top=[],
-                cdf_quad_left=[],
-                cdf_quad_right=[],
-            )
-        )
+        self.observed = []
+        self.observed_hist_source = ColumnDataSource(dict(top=[], left=[], right=[]))
+        self.observed_cdf_source = ColumnDataSource(dict(cdf_x=[], cdf_y=[]))
         self.numeric_source = ColumnDataSource(dict(x=[]))
         # Cria o plot base
-        self.pdf_plot = CustomFigure(
-            "Probability Density",
-            ("Values", "Relative frequency"),
-            y_range=Range1d(start=0.0),
+        self.pdf_plot = Figure(
+            "Probability Density", ("Values", "Relative frequency")
         )
         self.pdf_plot.quad(
-            source=self.observed_source,
-            top="cdf_quad_top",
+            source=self.observed_hist_source,
+            top="top",
             bottom=0,
-            left="cdf_quad_left",
-            right="cdf_quad_right",
+            left="left",
+            right="right",
             line_color="white",
             legend="Observed",
             color=colors[0],
         )
-        self.cdf_plot = CustomFigure(
+        self.cdf_plot = Figure(
             "Cumulative Probability",
             ("Values", "Relative frequency"),
             y_range=Range1d(start=0.0, end=1.02),
         )
         self.cdf_plot.line(
-            source=self.observed_source,
+            source=self.observed_cdf_source,
             x="cdf_x",
             y="cdf_y",
             legend="Observed",
@@ -114,33 +104,25 @@ class Plot:
         Args:
             num_bins (int): número de intervalos para o histrograma.
         """
-        if len(observed) < 1:
-            observed = self.observed_source.data["observed"]
-        x = np.linspace(min(observed), max(observed), len(observed))
-        hist, edges = np.histogram(observed, density=True, bins=num_bins)
+        if len(observed) > 1:
+            self.observed = observed
+        hist, edges = np.histogram(self.observed, density=True, bins=num_bins)
         cdf_x, cdf_y = cdf(hist, edges)
-        self.observed_source.data.update(
-            dict(
-                observed=observed,
-                x=x,
-                cdf_x=cdf_x,
-                cdf_y=cdf_y,
-                cdf_quad_top=hist,
-                cdf_quad_left=edges[:-1],
-                cdf_quad_right=edges[1:],
-            )
+        self.observed_hist_source.data.update(
+            dict(top=hist, left=edges[:-1], right=edges[1:])
         )
+        self.observed_cdf_source.data.update(dict(cdf_x=cdf_x, cdf_y=cdf_y))
+        x = np.linspace(min(self.observed), max(self.observed), len(self.observed))
+        self.numeric_source.data["x"] = x
 
     def update_numeric(self):
         """Função que atualiza a PDF e a CDF dos ajustada."""
         for dist_name in PARAMS_MAPPER.keys():
             param = {}
-            param[dist_name] = getattr(stats, dist_name).fit(
-                self.observed_source.data["observed"]
-            )
+            param[dist_name] = getattr(stats, dist_name).fit(self.observed)
             for key, value in zip(PARAMS_MAPPER[dist_name].keys(), param[dist_name]):
                 PARAMS_MAPPER[dist_name][key] = value
-        x = self.numeric_source.data["x"] = self.observed_source.data["x"]
+        x = self.numeric_source.data["x"]
         for dist_name in PARAMS_MAPPER.keys():
             dist = getattr(stats, dist_name)(**PARAMS_MAPPER[dist_name])
             data = {
