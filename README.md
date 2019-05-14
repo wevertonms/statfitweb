@@ -15,7 +15,7 @@ If you use Windows, you need to install Python 3 in your system:
 After that, you need to install the dependencies using the running command bellow in cmd:
 
 ```
-python3 -m pip install --user scipy bokeh
+python3 -m pip install requeriments.txt
 ```
 
 ## Running
