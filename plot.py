@@ -40,17 +40,14 @@ class Plot:
 
     def __init__(self):
         """Construtor."""
-        self.observed = []
-        self.observed_hist_source = ColumnDataSource(dict(top=[], left=[], right=[]))
-        self.observed_cdf_source = ColumnDataSource(dict(cdf_x=[], cdf_y=[]))
-        self.numeric_source = ColumnDataSource(dict(x=[]))
+        self.values = []
+        self.hist_source = ColumnDataSource(dict(x=[], y=[], left=[], right=[]))
+        self.cumulative_source = ColumnDataSource(dict(x=[], y=[]))
         # Cria o plot base
-        self.pdf_plot = Figure(
-            "Probability Density", ("Values", "Relative frequency")
-        )
+        self.pdf_plot = Figure("Probability Density", ("Values", "Relative frequency"))
         self.pdf_plot.quad(
-            source=self.observed_hist_source,
-            top="top",
+            source=self.hist_source,
+            top="y",
             bottom=0,
             left="left",
             right="right",
@@ -64,24 +61,25 @@ class Plot:
             y_range=Range1d(start=0.0, end=1.02),
         )
         self.cdf_plot.line(
-            source=self.observed_cdf_source,
-            x="cdf_x",
-            y="cdf_y",
+            source=self.cumulative_source,
+            x="x",
+            y="y",
             legend="Observed",
             line_width=2,
             color=colors[0],
         )
+        self.pdf_source = {}
+        self.cdf_source = {}
         for dist_name, color in zip(PARAMS_MAPPER.keys(), colors[1:]):
-            pdf_name = f"{dist_name}_pdf_y"
-            cdf_name = f"{dist_name}_cdf_y"
             legend = dist_name[0].upper() + dist_name[1:]
-            self.numeric_source.data.update({pdf_name: [], cdf_name: []})
-            line_opts = dict(legend=legend, line_width=2, color=color)
+            self.pdf_source[dist_name] = ColumnDataSource(dict(x=[], y=[]))
+            self.cdf_source[dist_name] = ColumnDataSource(dict(x=[], y=[]))
+            line_opts = dict(legend=legend, line_width=3, color=color)
             self.pdf_plot.line(
-                source=self.numeric_source, x="x", y=pdf_name, **line_opts
+                source=self.pdf_source[dist_name], x="x", y="y", **line_opts
             )
             self.cdf_plot.line(
-                source=self.numeric_source, x="x", y=cdf_name, **line_opts
+                source=self.cdf_source[dist_name], x="x", y="y", **line_opts
             )
 
         self.pdf_plot.legend.click_policy = self.cdf_plot.legend.click_policy = "hide"
@@ -98,35 +96,35 @@ class Plot:
             ]
         )
 
-    def update_observed(self, num_bins, observed=[]):
+    def update_observed(self, num_bins, values=[]):
         """Função que atualiza o histograma e a CDF dos observações.
         
         Args:
             num_bins (int): número de intervalos para o histrograma.
         """
-        if len(observed) > 1:
-            self.observed = observed
-        hist, edges = np.histogram(self.observed, density=True, bins=num_bins)
-        cdf_x, cdf_y = cdf(hist, edges)
-        self.observed_hist_source.data.update(
-            dict(top=hist, left=edges[:-1], right=edges[1:])
+        if len(values) > 1:
+            self.values = values
+        hist, edges = np.histogram(self.values, density=True, bins=num_bins)
+        self.cumulative_source.data["x"], self.cumulative_source.data["y"] = cdf(
+            hist, edges
         )
-        self.observed_cdf_source.data.update(dict(cdf_x=cdf_x, cdf_y=cdf_y))
-        x = np.linspace(min(self.observed), max(self.observed), len(self.observed))
-        self.numeric_source.data["x"] = x
+        self.hist_source.data["left"] = edges[:-1]
+        self.hist_source.data["right"] = edges[1:]
+        x_ranges = [f"{l:.4g} - {r:.4g}" for l, r in zip(edges[:-1], edges[1:])]
+        self.hist_source.data["x"] = x_ranges
+        self.hist_source.data["y"] = hist
 
     def update_numeric(self):
         """Função que atualiza a PDF e a CDF dos ajustada."""
         for dist_name in PARAMS_MAPPER.keys():
             param = {}
-            param[dist_name] = getattr(stats, dist_name).fit(self.observed)
+            param[dist_name] = getattr(stats, dist_name).fit(self.values)
             for key, value in zip(PARAMS_MAPPER[dist_name].keys(), param[dist_name]):
                 PARAMS_MAPPER[dist_name][key] = value
-        x = self.numeric_source.data["x"]
+        x = np.linspace(min(self.values), max(self.values), len(self.values))
         for dist_name in PARAMS_MAPPER.keys():
+            self.pdf_source[dist_name].data["x"] = x
+            self.cdf_source[dist_name].data["x"] = x
             dist = getattr(stats, dist_name)(**PARAMS_MAPPER[dist_name])
-            data = {
-                f"{dist_name}_pdf_y": dist.pdf(x),
-                f"{dist_name}_cdf_y": dist.cdf(x),
-            }
-            self.numeric_source.data.update(data)
+            self.pdf_source[dist_name].data["y"] = dist.pdf(x)
+            self.cdf_source[dist_name].data["y"] = dist.cdf(x)
