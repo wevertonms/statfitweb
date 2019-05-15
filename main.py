@@ -14,23 +14,7 @@ from scipy import stats
 
 from bokeh_models import UploadButton
 from plot import Plot, Table
-
-
-class Dist:
-    def __init__(self, name, scipy, params):
-        self.name = name
-        self.scipy = scipy
-        self.params = params
-        self.frozen = None
-
-
-DISTS = [
-    Dist("Normal", stats.norm, dict(loc=None, scale=None)),
-    Dist("Log-Normal", stats.lognorm, dict(s=None, loc=None, scale=None)),
-    Dist("Weibull", stats.weibull_min, dict(c=None, loc=None, scale=None)),
-    Dist("Gamma", stats.gamma, dict(a=None, loc=None, scale=None)),
-    Dist("Logistic", stats.logistic, dict(loc=None, scale=None)),
-]
+from stats import DISTS, chi_squared, kolmogorov_smirnov, weverton
 
 
 def modify_doc(doc):
@@ -38,22 +22,16 @@ def modify_doc(doc):
     plot = Plot(DISTS)
     slider = Slider(title="Number of bins", value=10, start=5, end=15, step=1)
     div = Div(text="<h3>Goodness of fit tests</h3>")
-    table = Table(DISTS)
+    table = Table([dist.name for dist in DISTS])
 
     def slider_callback(attr, old, new):
         """Função que atualiza o histograma e a CDF dos observações."""
-        hist, edges = plot.update_histogram(new)
+        hist, edges = np.histogram(plot.values, density=True, bins=new)
+        plot.update_histogram(hist, edges)
         data = plot.cumulative_source.data
-        ks = []
-        chi = []
-        wms = []
-        for dist in DISTS:
-            cdf = dist.frozen.cdf
-            ks.append(np.max(np.abs(cdf(data["x"]) - data["y"])))
-            Ei = (cdf(edges)[1:] - cdf(edges)[:-1]) * len(plot.values)
-            Oi = hist * (edges[1] - edges[0]) * len(plot.values)
-            chi.append(np.sum((Ei - Oi) ** 2 / Ei))
-            wms.append(np.sum((cdf(data["x"]) - data["y"]) ** 2))
+        chi = [chi_squared(plot.values, dist.cdf, new) for dist in DISTS]
+        ks = [kolmogorov_smirnov(plot.values, dist.cdf) for dist in DISTS]
+        wms = [weverton(dist.cdf, data["x"], data["y"]) for dist in DISTS]
         table.source.data.update(
             ks=np.round(ks, 4), chi=np.round(chi, 4), wms=np.round(wms, 6)
         )
@@ -74,7 +52,7 @@ def modify_doc(doc):
             sizing_mode="scale_height",
         )
     )
-    doc.title = "Statfit"
+    doc.title = "Statfit Web"
 
 
 server = Server({"/": modify_doc})

@@ -5,6 +5,11 @@
         "titleBar.activeForeground": "#FBFAFD"
     },
     "cSpell.words": [
+        "Kolmogorov",
+        "Smirnov",
+        "Sturges",
+        "aderencia",
+        "bokeh",
         "delim",
         "dists",
         "loadtxt",
@@ -16,12 +21,14 @@
         "statfit",
         "vline",
         "webgl",
+        "weverton",
         "xaxis",
         "yaxis"
     ],
     "cSpell.language": "en,pt-BR",
     "python.formatting.provider": "black",
-    "python.pythonPath": "/home/weverton/.local/share/virtualenvs/statfit-k-WHbgoU/bin/python",
+    "python.pythonPath": "C:\\Users\\Weverton\\.virtualenvs\\statfit-Hn-hXqrA\\Scripts\\python.exe",
     "python.linting.pylintEnabled": true,
-    "python.linting.enabled": true
+    "python.linting.enabled": true,
+    "autoDocstring.docstringFormat": "google"
 }

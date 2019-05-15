@@ -1,0 +1,44 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/94653669/
+DISTS	..\\main.py	/^DISTS = [$/;"	kind:variable	line:20
+DISTS	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^DISTS = [$/;"	kind:variable	line:20
+Dist	..\\stats.py	/^class Dist:$/;"	kind:class	line:5
+Figure	..\\bokeh_models.py	/^def Figure(title, axis_labels, **kw):$/;"	kind:function	line:14
+Plot	..\\plot.py	/^class Plot:$/;"	kind:class	line:31
+Table	..\\plot.py	/^class Table:$/;"	kind:class	line:132
+UploadButton	..\\bokeh_models.py	/^def UploadButton(label, callback, **kw):$/;"	kind:function	line:36
+__init__	..\\plot.py	/^    def __init__(self, dists):$/;"	kind:member	line:133
+__init__	..\\plot.py	/^    def __init__(self, dists):$/;"	kind:member	line:34
+__init__	..\\stats.py	/^    def __init__(self, name, scipy, params):$/;"	kind:member	line:6
+bokeh_models.py	..\\bokeh_models.py	1;"	kind:file	line:1
+chi_squared	..\\stats.py	/^def chi_squared(cdf_function, values, hist, edges):$/;"	kind:function	line:13
+colors	..\\bokeh_models.py	/^from bokeh.palettes import Category10_10 as colors  # pylint: disable=no-name-in-module$/;"	kind:unknown	line:9
+cumulative	..\\plot.py	/^def cumulative(hist, edges):$/;"	kind:function	line:11
+kolmogorov_smirnov	..\\stats.py	/^def kolmogorov_smirnov(cdf, x, y):$/;"	kind:function	line:20
+main.py	..\\main.py	1;"	kind:file	line:1
+main.py.2c553062089a15597e815da9d769e9ae.py	..\\main.py.2c553062089a15597e815da9d769e9ae.py	1;"	kind:file	line:1
+make_plot	..\\main.py	/^    def make_plot(attr, old, new):$/;"	kind:function	line:50
+make_plot	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^    def make_plot(attr, old, new):$/;"	kind:function	line:50
+modify_doc	..\\main.py	/^def modify_doc(doc):$/;"	kind:function	line:29
+modify_doc	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^def modify_doc(doc):$/;"	kind:function	line:29
+np	..\\main.py	/^import numpy as np$/;"	kind:namespace	line:8
+np	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^import numpy as np$/;"	kind:namespace	line:8
+np	..\\plot.py	/^import numpy as np$/;"	kind:namespace	line:3
+np	..\\stats.py	/^import numpy as np$/;"	kind:namespace	line:1
+plot.py	..\\plot.py	1;"	kind:file	line:1
+plt	..\\bokeh_models.py	/^import bokeh.plotting as plt$/;"	kind:namespace	line:5
+server	..\\main.py	/^server = Server({"\/": modify_doc})$/;"	kind:variable	line:69
+server	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^server = Server({"\/": modify_doc})$/;"	kind:variable	line:69
+slider_callback	..\\main.py	/^    def slider_callback(attr, old, new):$/;"	kind:function	line:36
+slider_callback	..\\main.py.2c553062089a15597e815da9d769e9ae.py	/^    def slider_callback(attr, old, new):$/;"	kind:function	line:36
+ss	..\\stats.py	/^import scipy.stats as ss$/;"	kind:namespace	line:2
+stats.py	..\\stats.py	1;"	kind:file	line:1
+update_data	..\\plot.py	/^    def update_data(self, values):$/;"	kind:member	line:100
+update_histogram	..\\plot.py	/^    def update_histogram(self, hist, edges):$/;"	kind:member	line:88
+upload_callback	..\\bokeh_models.py	/^    def upload_callback(attr, old, new):$/;"	kind:function	line:78
+weverton	..\\stats.py	/^def weverton(cdf, x, y):$/;"	kind:function	line:24

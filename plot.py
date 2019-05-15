@@ -6,26 +6,7 @@ from bokeh.models import ColumnDataSource, Panel, Range1d, Tabs
 from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
 
 from bokeh_models import Figure, colors
-
-
-def cumulative(hist, edges):
-    """Cria um gráfico CDF (escada) com base no histograma.
-    
-    Args:
-        hist (numpy.array): frequencias relativas do histograma.
-        edges (numpy.array): lista de valores que limitam as classes do histograma.
-    
-    Returns:
-        list[float]: coordenadas do x dos pontos do gráfico.
-        list[float]: coordenadas do y dos pontos do gráfico.
-    """
-    x = [edges[i // 2] for i in range(2 * len(edges[:-1]))]
-    x.append(edges[-1])
-    cdf = np.cumsum(hist * (edges[1] - edges[0]))
-    y = [cdf[(i - 1) // 2] for i in range(2 * len(cdf))]
-    y[0] = 0
-    y.append(cdf[-1])
-    return x, y
+from stats import cumulative
 
 
 class Plot:
@@ -85,19 +66,17 @@ class Plot:
             ]
         )
 
-    def update_histogram(self, num_bins):
+    def update_histogram(self, hist, edges):
         """Função que atualiza o histograma e a CDF dos observações.
-        
+
         Args:
-            num_bins (int): número de intervalos para o histrograma.
+            num_bins (int): número de intervalos para o histograma.
         """
-        hist, edges = np.histogram(self.values, density=True, bins=num_bins)
         x_ranges = [f"{l:.4g} - {r:.4g}" for l, r in zip(edges[:-1], edges[1:])]
         self.hist_source.data["left"] = edges[:-1]
         self.hist_source.data["right"] = edges[1:]
         self.hist_source.data["x"] = x_ranges
         self.hist_source.data["y"] = hist
-        return hist, edges
 
     def update_data(self, values):
         if len(values) <= 30:
@@ -111,32 +90,37 @@ class Plot:
             )
         self.num_bins = int(num_bins)
         self.values = values
-        self.update_histogram(self.num_bins)
+        hist, edges = np.histogram(self.values, density=True, bins=self.num_bins)
+        self.update_histogram(hist, edges)
         hist, edges = np.histogram(self.values, density=True, bins=len(self.values))
         x, y = cumulative(hist, edges)
         self.cumulative_source.data["x"] = x
         self.cumulative_source.data["y"] = y
         #  Atualiza a PDF e a CDF dos ajustada.
         for dist in self.dists:
-            param = dist.scipy.fit(self.values)
-            for key, value in zip(dist.params.keys(), param):
-                dist.params[key] = value
+            dist.fit(self.values)
         x = np.linspace(min(self.values), max(self.values), len(self.values))
         for dist in self.dists:
             self.pdf_sources[dist.name].data["x"] = x
             self.cdf_sources[dist.name].data["x"] = x
-            dist.frozen = dist.scipy(**dist.params)
-            self.pdf_sources[dist.name].data["y"] = dist.frozen.pdf(x)
-            self.cdf_sources[dist.name].data["y"] = dist.frozen.cdf(x)
+            self.pdf_sources[dist.name].data["y"] = dist.pdf(x)
+            self.cdf_sources[dist.name].data["y"] = dist.cdf(x)
 
 
 class Table:
-    def __init__(self, dists):
+    """Tabela com os valores dos teste de aderencia para cada distribuição.
+
+    Args:
+        dist_names (list[str]): nomes das distribuição.
+    """
+
+    def __init__(self, dist_names):
+        """Construtor."""
         data = dict(
-            dists=[dist.name for dist in dists],
-            chi=[0] * len(dists),
-            ks=[0] * len(dists),
-            wms=[0] * len(dists),
+            dist_names=dist_names,
+            chi=[0] * len(dist_names),
+            ks=[0] * len(dist_names),
+            wms=[0] * len(dist_names),
         )
         self.source = ColumnDataSource(data)
         self.table = DataTable(
