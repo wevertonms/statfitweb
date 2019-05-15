@@ -11,17 +11,5 @@
             "program": "${file}",
             "console": "integratedTerminal"
         },
-        {
-            "name": "Python: bokeh",
-            "type": "python",
-            "request": "launch",
-            "module": "bokeh",
-            "env": {},
-            "args": [
-                "serve",
-                "--show",
-                "${file}",
-            ],
-        }
     ]
 }

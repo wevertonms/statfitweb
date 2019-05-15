@@ -84,22 +84,3 @@ def UploadButton(label, callback, **kw):
 
     file_source.on_change("data", upload_callback)
     return button
-
-
-if __name__ == "__main__":
-
-    def modify_doc(doc):
-        """Inclui o itens no curdoc do Bokeh Server."""
-        p = Paragraph(text="Antes")
-        upload_button = UploadButton(label="Open file ...", callback=callback)
-
-        def callback(attr, old, new):
-            p.texte = new
-
-        doc.add_root(column([upload_button, p]))
-
-    server = Server({"/": modify_doc})
-    server.start()
-    print("Opening Bokeh application on http://localhost:5006/")
-    server.io_loop.add_callback(server.show, "/")
-    server.io_loop.start()

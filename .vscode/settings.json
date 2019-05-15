@@ -21,7 +21,7 @@
     ],
     "cSpell.language": "en,pt-BR",
     "python.formatting.provider": "black",
-    "python.pythonPath": "C:\\Users\\Weverton\\.virtualenvs\\statfit-Hn-hXqrA\\Scripts\\python.exe",
+    "python.pythonPath": "/home/weverton/.local/share/virtualenvs/statfit-k-WHbgoU/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true
 }
