@@ -3,7 +3,7 @@
 import numpy as np
 from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource, Panel, Range1d, Tabs
-from bokeh.models.widgets import DataTable, DateFormatter, TableColumn
+from bokeh.models.widgets import DataTable, DateFormatter, TableColumn, NumberFormatter
 
 from bokeh_models import Figure, colors
 from stats import cumulative
@@ -67,7 +67,7 @@ class Plot:
         )
 
     def update_histogram(self, hist, edges):
-        """Função que atualiza o histograma e a CDF dos observações.
+        """Função que atualiza o histograma das observações.
 
         Args:
             num_bins (int): número de intervalos para o histograma.
@@ -79,6 +79,11 @@ class Plot:
         self.hist_source.data["y"] = hist
 
     def update_data(self, values):
+        """Função que atualiza os dados de observações.
+
+        Args:
+            values (numpy.array): valores das observações.
+        """
         if len(values) <= 30:
             num_bins = 2 * np.sqrt(len(values))
         elif len(values) <= 100:
@@ -94,8 +99,7 @@ class Plot:
         self.update_histogram(hist, edges)
         hist, edges = np.histogram(self.values, density=True, bins=len(self.values))
         x, y = cumulative(hist, edges)
-        self.cumulative_source.data["x"] = x
-        self.cumulative_source.data["y"] = y
+        self.cumulative_source.data = dict(x=x, y=y)
         #  Atualiza a PDF e a CDF dos ajustada.
         for dist in self.dists:
             dist.fit(self.values)
@@ -122,14 +126,15 @@ class Table:
             ks=[0] * len(dist_names),
             wms=[0] * len(dist_names),
         )
+        formatter = NumberFormatter(format="0.00[0000]", text_align="center")
         self.source = ColumnDataSource(data)
         self.table = DataTable(
             source=self.source,
             columns=[
-                TableColumn(field="dists", title="Distribution"),
-                TableColumn(field="chi", title="Chi-squared"),
-                TableColumn(field="ks", title="Kolmogorov-Smirnov"),
-                TableColumn(field="wms", title="WMS"),
+                TableColumn(field="dist_names", title="Distribution"),
+                TableColumn(field="chi", title="Chi", formatter=formatter),
+                TableColumn(field="ks", title="KS", formatter=formatter),
+                TableColumn(field="wms", title="WMS", formatter=formatter),
             ],
             width=400,
             index_position=None,

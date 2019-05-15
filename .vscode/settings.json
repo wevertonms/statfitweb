@@ -16,6 +16,7 @@
         "measureds",
         "numpy",
         "onchange",
+        "pvalue",
         "pylint",
         "scipy",
         "statfit",
