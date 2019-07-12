@@ -17,10 +17,8 @@ from bokeh_models import UploadButton
 from plot import Plot, Table
 from stats import DISTS, chi_squared, kolmogorov_smirnov, weverton
 
-PORT = 5006 if len(sys.argv) < 2 else int(sys.argv[1])
 
-
-def modify_doc(doc):
+def create_plot():
     """Inclui o gráficos e os controles no curdoc do Bokeh Server."""
     plot = Plot(DISTS)
     numbins_slider = Slider(title="Number of bins", value=10, start=5, end=15, step=1)
@@ -53,14 +51,23 @@ def modify_doc(doc):
     numbins_slider.on_change("value", numbins_slider_callback)
     pvalue_slider.on_change("value", pvalue_slider_callback)
     controls = column(button, numbins_slider, div, pvalue_slider, table.table)
-    doc.add_root(row(controls, plot.layout, sizing_mode="scale_height"))
+    return row(controls, plot.layout, sizing_mode="scale_height")
+
+
+def modify_doc(doc):
+    """Inclui o gráficos e os controles no curdoc do Bokeh Server."""
+    doc.add_root(create_plot())
     doc.title = "Statfit Web"
 
 
-server = Server({"/": modify_doc}, port=PORT)
-server.start()
-
 if __name__ == "__main__":
-    print("Opening Bokeh application on http://localhost:5006/")
+    server = Server({"/": modify_doc})
+    server.start()
+    print(f"Opening Bokeh application on http://localhost:5006/")
     server.io_loop.add_callback(server.show, "/")
     server.io_loop.start()
+else:
+    from bokeh.io import curdoc
+
+    curdoc().add_root(create_plot())
+    curdoc().title = "Statfit Web"
