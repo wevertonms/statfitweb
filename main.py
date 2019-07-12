@@ -4,6 +4,7 @@
 
 import base64
 import io
+import sys
 
 import numpy as np
 from bokeh.layouts import column, row
@@ -15,6 +16,8 @@ from scipy import stats
 from bokeh_models import UploadButton
 from plot import Plot, Table
 from stats import DISTS, chi_squared, kolmogorov_smirnov, weverton
+
+PORT = 5006 if len(sys.argv) < 2 else int(sys.argv[1])
 
 
 def modify_doc(doc):
@@ -54,7 +57,7 @@ def modify_doc(doc):
     doc.title = "Statfit Web"
 
 
-server = Server({"/": modify_doc})
+server = Server({"/": modify_doc}, port=PORT)
 server.start()
 
 if __name__ == "__main__":

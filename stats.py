@@ -8,7 +8,7 @@ class Dist:
     Args:
         name (str): nome da distribuição.
         scipy (scipy.stats.rvs): classe de scipy.stats associada com a distribuição.
-        params (dict): parâmetros de ajuste da distribuição.
+        params (dict): dicionário com chaves equivalentes aos parâmetros de ajuste da distribuição.
     """
 
     def __init__(self, name, scipy, params):
@@ -45,7 +45,7 @@ def cumulative(hist, edges):
     """Cria um gráfico CDF (escada) com base no histograma.
 
     Args:
-        hist (numpy.array): frequencias relativas do histograma.
+        hist (numpy.array): frequências relativas do histograma.
         edges (numpy.array): lista de valores que limitam as classes do histograma.
 
     Returns:

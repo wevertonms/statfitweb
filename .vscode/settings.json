@@ -28,7 +28,7 @@
     ],
     "cSpell.language": "en,pt-BR",
     "python.formatting.provider": "black",
-    "python.pythonPath": "C:\\Users\\Weverton\\.virtualenvs\\statfit-Hn-hXqrA\\Scripts\\python.exe",
+    "python.pythonPath": "C:\\Users\\Weverton Marques\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "autoDocstring.docstringFormat": "google"

@@ -3,7 +3,7 @@
 import numpy as np
 from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource, Panel, Range1d, Tabs
-from bokeh.models.widgets import DataTable, DateFormatter, TableColumn, NumberFormatter
+from bokeh.models.widgets import DataTable, TableColumn, NumberFormatter
 
 from bokeh_models import Figure, colors
 from stats import cumulative
