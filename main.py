@@ -23,7 +23,7 @@ def create_plot():
     plot = Plot(DISTS)
     numbins_slider = Slider(title="Number of bins", value=10, start=5, end=15, step=1)
     div = Div(text="<h2>Goodness of fit tests (p-values)</h2>")
-    pvalue_slider = Slider(title="Min p-value (%)", value=5, start=1, end=10, step=1)
+    # pvalue_slider = Slider(title="Min p-value (%)", value=5, start=1, end=10, step=1)
     table = Table([dist.name for dist in DISTS])
 
     def numbins_slider_callback(attr, old, new):
@@ -36,7 +36,7 @@ def create_plot():
         wms = [weverton(dist.cdf, data["x"], data["y"]) for dist in DISTS]
         table.source.data.update(ks=ks, chi=chi, wms=wms)
 
-    def pvalue_slider_callback(attr, old, new):
+    # def pvalue_slider_callback(attr, old, new):
         pass
 
     def make_plot(attr, old, new):
@@ -49,8 +49,8 @@ def create_plot():
 
     button = UploadButton("Open file ...", make_plot, button_type="success")
     numbins_slider.on_change("value", numbins_slider_callback)
-    pvalue_slider.on_change("value", pvalue_slider_callback)
-    controls = column(button, numbins_slider, div, pvalue_slider, table.table)
+    # pvalue_slider.on_change("value", pvalue_slider_callback)
+    controls = column(button, numbins_slider, div, table.table)
     return row(controls, plot.layout, sizing_mode="scale_height")
 
 

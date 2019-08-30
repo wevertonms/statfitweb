@@ -29,7 +29,7 @@
     ],
     "cSpell.language": "en,pt-BR",
     "python.formatting.provider": "black",
-    "python.pythonPath": "C:\\Users\\Weverton Marques\\.virtualenvs\\statfit-Hn-hXqrA\\Scripts\\python.exe",
+    "python.pythonPath": "/usr/bin/python3.7",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "autoDocstring.docstringFormat": "google"
