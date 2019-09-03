@@ -33,7 +33,7 @@ class Plot:
         )
         self.cdf_plot = Figure(
             "Cumulative Probability Density",
-            ("Values", "Relative frequency"),
+            ("Values", "Cumulative frequency"),
             y_range=Range1d(start=0.0, end=1.02),
         )
         self.cdf_plot.line(
