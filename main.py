@@ -48,7 +48,7 @@ def create_plot():
         numbins_slider.end = len(observed) // 3
         numbins_slider_callback(attr, old, numbins_slider.value)
 
-    button = FileInput(label="Upload", accept=".csv")
+    button = FileInput()
     button.on_change("value", make_plot)
     numbins_slider.on_change("value", numbins_slider_callback)
     # pvalue_slider.on_change("value", pvalue_slider_callback)

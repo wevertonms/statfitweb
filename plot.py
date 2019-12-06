@@ -30,7 +30,7 @@ class Plot:
             left="left",
             right="right",
             line_color="white",
-            legend="Observed",
+            legend_label="Observed",
             color=colors[0],
         )
         self.cdf_plot = Figure(
@@ -42,7 +42,7 @@ class Plot:
             source=self.cumulative_source,
             x="x",
             y="y",
-            legend="Observed",
+            legend_label="Observed",
             line_width=2,
             color=colors[0],
         )
@@ -51,7 +51,7 @@ class Plot:
         for dist, color in zip(dists, colors[1:]):
             self.pdf_sources[dist.name] = ColumnDataSource(dict(x=[], y=[]))
             self.cdf_sources[dist.name] = ColumnDataSource(dict(x=[], y=[]))
-            line_opts = dict(legend=dist.name, line_width=3, color=color)
+            line_opts = dict(legend_label=dist.name, line_width=3, color=color)
             self.pdf_plot.line(
                 source=self.pdf_sources[dist.name], x="x", y="y", **line_opts
             )
