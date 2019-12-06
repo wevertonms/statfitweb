@@ -5,9 +5,11 @@ from bokeh.layouts import layout
 from bokeh.models import ColumnDataSource, Panel, Range1d, Tabs
 from bokeh.models.widgets import DataTable, TableColumn, NumberFormatter
 
-from bokeh_models import Figure, colors
+from bokeh_models import Figure
+from bokeh.palettes import Category10 as colors
 from stats import cumulative
 
+colors = colors[10]
 
 class Plot:
     """Abstração para o gráficos base da aplicação."""

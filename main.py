@@ -9,11 +9,10 @@ import sys
 import numpy as np
 from bokeh.layouts import column, row
 from bokeh.models import ColumnDataSource, CustomJS
-from bokeh.models.widgets import Slider, Div
+from bokeh.models.widgets import Slider, Div, FileInput
 from bokeh.server.server import Server
 from scipy import stats
 
-from bokeh_models import UploadButton
 from plot import Plot, Table
 from stats import DISTS, chi_squared, kolmogorov_smirnov, weverton
 
@@ -41,13 +40,16 @@ def create_plot():
 
     def make_plot(attr, old, new):
         """Função que atualiza os dados do arquivo aberto."""
-        observed = np.loadtxt(new)
+        file_contents = base64.b64decode(new)
+        file_contents_bytes = io.BytesIO(file_contents)
+        observed = np.loadtxt(file_contents_bytes)
         plot.update_data(observed)
         numbins_slider.value = plot.num_bins
         numbins_slider.end = len(observed) // 3
         numbins_slider_callback(attr, old, numbins_slider.value)
 
-    button = UploadButton("Open file ...", make_plot, button_type="success")
+    button = FileInput(label="Upload", accept=".csv")
+    button.on_change("value", make_plot)
     numbins_slider.on_change("value", numbins_slider_callback)
     # pvalue_slider.on_change("value", pvalue_slider_callback)
     controls = column(button, numbins_slider, div, table.table)
