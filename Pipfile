@@ -16,6 +16,7 @@ pyinstaller = "*"
 [packages]
 bokeh = "*"
 scipy = "*"
+pillow = ">=6.2.0"
 
 [requires]
 python_version = "3.7"
