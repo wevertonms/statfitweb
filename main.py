@@ -6,6 +6,7 @@ import base64
 import io
 
 import numpy as np
+from bokeh.io import curdoc
 from bokeh.layouts import column, row
 from bokeh.models.widgets import Div, FileInput, Slider
 from bokeh.server.server import Server
@@ -60,3 +61,6 @@ if __name__ == "__main__":
     print(f"Opening Bokeh application on http://localhost:5006/")
     SERVER.io_loop.add_callback(SERVER.show, "/")
     SERVER.io_loop.start()
+else:
+    curdoc().add_root(make_layout())
+    curdoc().title = "Statfit Web"
