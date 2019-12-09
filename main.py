@@ -60,3 +60,8 @@ if __name__ == "__main__":
     print(f"Opening Bokeh application on http://localhost:5006/")
     SERVER.io_loop.add_callback(SERVER.show, "/")
     SERVER.io_loop.start()
+else:
+    from bokeh.io import curdoc
+
+    curdoc().add_root(create_plot())
+    curdoc().title = "Statfit Web"
