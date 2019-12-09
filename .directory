@@ -1,7 +1,6 @@
 [Dolphin]
 SortRole=type
-Timestamp=2019,12,6,13,45,20
+Timestamp=2019,12,9,11,42,4
 Version=4
-
-[Settings]
-HiddenFilesShown=true
+ViewMode=1
+VisibleRoles=Details_text,Details_size,Details_modificationtime,Details_type,CustomizedDetails

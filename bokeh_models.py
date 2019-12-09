@@ -1,8 +1,5 @@
 """Modelos Bokeh customizados."""
-import base64
-import io
 
-from bokeh.models import ColumnDataSource, CustomJS
 from bokeh.plotting import figure
 
 

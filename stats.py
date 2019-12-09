@@ -1,3 +1,5 @@
+"""Módulo que implementa as análises estatísticas."""
+
 import numpy as np
 import scipy.stats as ss
 
@@ -7,37 +9,36 @@ class Dist:
 
     Args:
         name (str): nome da distribuição.
-        scipy (scipy.stats.rvs): classe de scipy.stats associada com a distribuição.
+        scipy_class (scipy.stats.rvs): classe de scipy.stats associada com a distribuição.
         params (dict): dicionário com chaves equivalentes aos parâmetros de ajuste da distribuição.
     """
 
-    def __init__(self, name, scipy, params):
+    def __init__(self, name, scipy_class, params_keys):
         """Construtor."""
         self.name = name
-        self.scipy = scipy
-        self.params = params
+        self.scipy_class = scipy_class
+        self.params_keys = params_keys
         self.pdf = None
         self.cdf = None
 
-    def fit(self, values):
+    def fit(self, observed_values):
         """Ajusta a distribuição para os valores das observações.
 
         Args:
-            values (numpy.array): valores das observações
+            observed_values (numpy.array): valores das observações.
         """
-        param = self.scipy.fit(values)
-        for key, value in zip(self.params.keys(), param):
-            self.params[key] = value
-        self.pdf = self.scipy(**self.params).pdf
-        self.cdf = self.scipy(**self.params).cdf
+        param_values = self.scipy_class.fit(observed_values)
+        params = dict((k, v) for k, v in zip(self.params_keys, param_values))
+        self.pdf = self.scipy_class(**params).pdf
+        self.cdf = self.scipy_class(**params).cdf
 
 
 DISTS = [
-    Dist("Normal", ss.norm, dict(loc=None, scale=None)),
-    Dist("Log-Normal", ss.lognorm, dict(s=None, loc=None, scale=None)),
-    Dist("Weibull", ss.weibull_min, dict(c=None, loc=None, scale=None)),
-    Dist("Gamma", ss.gamma, dict(a=None, loc=None, scale=None)),
-    Dist("Logistic", ss.logistic, dict(loc=None, scale=None)),
+    Dist("Normal", ss.norm, ["loc", "scale"]),
+    Dist("Log-Normal", ss.lognorm, ["s", "loc", "scale"]),
+    Dist("Weibull", ss.weibull_min, ["c", "loc", "scale"]),
+    Dist("Gamma", ss.gamma, ["a", "loc", "scale"]),
+    Dist("Logistic", ss.logistic, ["loc", "scale"]),
 ]
 
 
@@ -104,16 +105,3 @@ def weverton(cdf, x, y):
         float: valor do teste.
     """
     return np.sum((cdf(x) - y) ** 2)
-
-
-if __name__ == "__main__":
-    values = np.linspace(-15, 15, 9)
-    DISTS[0].fit(values)
-    cdf_function = DISTS[0].cdf
-
-    results = ss.kstest(values, cdf_function)
-    print(f"KS: {results[0]:.3g}; p-value = {results[1]:.5g}")
-
-    n_bins = np.random.randint(1, len(values))
-    results = chi_squared(values, cdf_function, n_bins)
-    print(f"Chi: {results[0]:.3g}; p-value = {results[1]:.5g} ({n_bins} bins)")
