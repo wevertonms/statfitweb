@@ -94,7 +94,7 @@ def kolmogorov_smirnov(values, cdf_function):
 
 
 def weverton(cdf, x, y):
-    """Calcula o valor do teste Chi quadrado para um dado número de intervalos.
+    """Calcula o valor do teste de aderência customizado para um dado número de intervalos.
 
     Args:
         cdf_function (callable): função que calcula a CDF para um dados pontos.
