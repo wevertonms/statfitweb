@@ -56,7 +56,12 @@ def modify_doc(doc):
 
 
 if __name__ == "__main__":
-    SERVER = Server({"/": modify_doc})
+    SERVER = Server(
+        {"/": modify_doc},
+        allow_websocket_origin=[
+            "5006-afaf0a19-37a2-4628-8c52-6bbfcf7e190d.ws-us02.gitpod.io"
+        ],
+    )
     SERVER.start()
     print(f"Opening Bokeh application on http://localhost:5006/")
     SERVER.io_loop.add_callback(SERVER.show, "/")

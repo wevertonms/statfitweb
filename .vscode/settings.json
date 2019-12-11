@@ -33,7 +33,7 @@
         ".pylintrc"
     ],
     "python.formatting.provider": "black",
-    "python.pythonPath": "/home/weverton/.local/share/virtualenvs/statfit-7rupYQ4d/bin/python",
+    "python.pythonPath": ".venv/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "autoDocstring.docstringFormat": "google",
