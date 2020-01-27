@@ -1,5 +1,8 @@
 # StatFitWeb
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/160f7d292c4b40618f6ed0c3cdf6758c)](https://app.codacy.com/manual/wevertonms/statfitweb?utm_source=github.com&utm_medium=referral&utm_content=wevertonms/statfitweb&utm_campaign=Badge_Grade_Dashboard)
+
+
 Small python web application for statistical characterization of made with [SciPy](https://docs.scipy.org/doc/scipy/reference/tutorial/stats.html) and [Bokeh](https://bokeh.pydata.org/en/latest/).
 
 ![](screenshoot.png)
