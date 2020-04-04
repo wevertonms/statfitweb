@@ -61,7 +61,6 @@ if __name__ == "__main__":
         allow_websocket_origin=[
             "5006-afaf0a19-37a2-4628-8c52-6bbfcf7e190d.ws-us02.gitpod.io",
             "localhost:5006",
-            "statfitweb.herokuapp.com",
         ],
     )
     SERVER.start()
