@@ -1,8 +1,19 @@
 {
     "workbench.colorCustomizations": {
-        "activityBar.background": "#2E2363",
-        "titleBar.activeBackground": "#40308B",
-        "titleBar.activeForeground": "#FBFAFD"
+        "activityBar.background": "#2d2462",
+        "activityBar.activeBackground": "#2d2462",
+        "activityBar.activeBorder": "#a34b3c",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#a34b3c",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "titleBar.activeBackground": "#1c163d",
+        "titleBar.inactiveBackground": "#1c163d99",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveForeground": "#e7e7e799",
+        "statusBar.background": "#1c163d",
+        "statusBarItem.hoverBackground": "#2d2462",
+        "statusBar.foreground": "#e7e7e7"
     },
     "cSpell.words": [
         "Kolmogorov",
@@ -33,12 +44,13 @@
         ".pylintrc"
     ],
     "python.formatting.provider": "black",
-    "python.pythonPath": ".venv/bin/python",
+    "python.pythonPath": "/home/weverton/.local/bin/python",
     "python.linting.pylintEnabled": true,
     "python.linting.enabled": true,
     "autoDocstring.docstringFormat": "google",
     "editor.formatOnSave": true,
     "editor.rulers": [
         88
-    ]
+    ],
+    "peacock.color": "#1c163d"
 }
